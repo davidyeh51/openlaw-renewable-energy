@@ -527,8 +527,14 @@ async function saveCurrentNote() {
     }
   }
 
+  // 產生符合 PostgreSQL UUID 標準格式之唯一識別碼
+  const existing = userNotes.find(n => n.anchor === currentNoteAnchor);
+  const noteId = (existing && existing.id && existing.id.includes('-')) 
+    ? existing.id 
+    : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : '00000000-0000-4000-8000-' + Date.now().toString(16).padStart(12, '0'));
+
   const newNote = {
-    id: Date.now().toString(),
+    id: noteId,
     user_id: currentUser ? currentUser.id : 'local-user',
     law_id: 'J0130032',
     article_no: currentNoteArticleNo,
@@ -536,7 +542,8 @@ async function saveCurrentNote() {
     content: content,
     tags: tags,
     attachment_url: fileUrl,
-    created_at: new Date().toISOString()
+    created_at: existing?.created_at || new Date().toISOString(),
+    updated_at: new Date().toISOString()
   };
 
   // 移除既有此條的舊筆記並加入新筆記
@@ -546,7 +553,10 @@ async function saveCurrentNote() {
 
   if (currentUser && supabaseClient) {
     try {
-      await supabaseClient.from('article_notes').upsert([newNote]);
+      const { error: upsertErr } = await supabaseClient.from('article_notes').upsert([newNote]);
+      if (upsertErr) {
+        console.error('[Supabase Note Upsert Error]', upsertErr);
+      }
     } catch (err) {
       console.warn('[Supabase Note Upsert]', err);
     }
