@@ -1,0 +1,159 @@
+/* ==========================================================================
+   OpenLaw Renewable Energy - Editorial Typography & Modern Layout
+   Designed for Taiwan Law Reading, Rulings Review & Print Friendliness
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif+TC:wght@400;600;700&display=swap');
+
+:root {
+  --color-primary: #184e38;
+  --color-primary-dark: #113828;
+  --color-primary-light: #e8f3ed;
+  --color-accent: #2e7d56;
+  --color-text-main: #1f2937;
+  --color-text-muted: #4b5563;
+  --color-bg-page: #f9fbf9;
+  --color-border: #dbe4dc;
+  --color-highlight: #fef08a;
+  --font-serif: 'Noto Serif TC', Georgia, Cambria, serif;
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg-page);
+  color: var(--color-text-main);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+.legal-serif {
+  font-family: var(--font-serif);
+}
+
+/* Article Grid Layout */
+.article-grid {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  gap: 24px;
+  padding: 24px 0;
+  border-top: 1px solid var(--color-border);
+  scroll-margin-top: 80px;
+  transition: background-color 0.25s ease;
+}
+
+.article-grid:target {
+  background-color: #fefce8;
+  border-radius: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+@media (max-width: 640px) {
+  .article-grid {
+    display: block;
+    padding: 20px 0;
+  }
+  .article-heading {
+    margin-bottom: 8px;
+  }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Legal text formatting */
+.legal-text {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  line-height: 2;
+  letter-spacing: 0.015em;
+  color: #1e293b;
+  white-space: pre-line;
+}
+
+.legal-item {
+  display: block;
+  padding-left: 1.75rem;
+  text-indent: -1.75rem;
+  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+
+/* Modal and Drawer Backdrop Animation */
+.drawer-backdrop {
+  background-color: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+  transition: opacity 0.3s ease;
+}
+
+/* Print Specific Rules (A4 Friendly Layout) */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 20mm 15mm 20mm 15mm;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 11pt !important;
+    line-height: 1.6 !important;
+  }
+
+  .no-print,
+  nav,
+  aside,
+  button,
+  .action-toolbar,
+  #search-bar-container,
+  #quick-jump-container,
+  #filter-tags-container,
+  .article-actions,
+  .drawer-panel,
+  .modal-panel,
+  #toast-container {
+    display: none !important;
+  }
+
+  .article-grid {
+    grid-template-columns: 80px 1fr !important;
+    padding: 12px 0 !important;
+    border-top: 1px solid #ccc !important;
+    page-break-inside: avoid;
+  }
+
+  .legal-text {
+    font-size: 10.5pt !important;
+    line-height: 1.7 !important;
+    color: black !important;
+  }
+
+  .print-header {
+    display: block !important;
+    border-bottom: 2px solid black;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+  }
+
+  .print-footer {
+    display: block !important;
+    margin-top: 24px;
+    font-size: 9pt;
+    text-align: center;
+    color: #666;
+  }
+}
